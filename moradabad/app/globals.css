@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  --color-primary: #791535;
+  --color-secondary: #826955;
+  --color-accent: #fddfbf;
+  --color-light: #ffffff;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-accent: var(--color-accent);
+  --color-light: var(--color-light);
+  --font-sans: var(--font-plus-jakarta-sans);
+  /* --font-mono: var(--font-geist-mono); */
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  /* font-family: Arial, Helvetica, sans-serif; */
+  /* font-family: "Negaroa", sans-serif; */
+  font-family: "Montserrat", sans-serif;
+}
+
+*,
+em,
+i,
+.normal,
+[class*="normal"],
+.font-serif {
+  font-style: normal !important;
+}
+
+/* @font-face {
+  font-family: "Negaroa";
+  src: url("/assets/fonts/Negaroa-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+} */
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+@keyframes conveyor-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-conveyor {
+  animation: conveyor-scroll 20s linear infinite;
+}
+
+.animate-conveyor:hover {
+  animation-play-state: paused;
+}
