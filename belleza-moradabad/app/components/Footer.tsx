@@ -1,6 +1,7 @@
-"use client";
+ "use client";
 
 import { MapPin, Phone, Mail, ArrowRight, ArrowUp } from "lucide-react";
+import Image from "next/image";
 
 // Lucide intentionally doesn't include brand/logo icons (Instagram,
 // Facebook, YouTube, etc. — that's a deliberate policy of the library),
@@ -54,12 +55,16 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.8fr_0.8fr_1.1fr]">
           {/* ---------- brand + newsletter ---------- */}
           <div>
-            <div className="flex items-baseline gap-2.5">
-              <span className="text-2xl font-extrabold text-light">AD Global</span>
-              <span className="text-[11px] font-medium uppercase tracking-[2.5px] text-accent">
-                House of Beauty
-              </span>
-            </div>
+            <div className="flex items-center">
+  <Image
+    src="https://res.cloudinary.com/dl6fjer3y/image/upload/v1782383362/belleza_favicon_main_lwrtxm.svg"
+    alt="AD Global Logo"
+    width={180}
+    height={60}
+    className="h-12 w-auto"
+    unoptimized
+  />
+</div>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-light/65">
               Turning passion into profession since day one — a certified beauty
               &amp; cosmetology academy built for real careers, not just
@@ -141,13 +146,13 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="mt-0.5 shrink-0 text-accent" />
                 <span className="text-sm leading-relaxed text-light/65">
-                  123 Beauty Street, Civil Lines, Moradabad, Uttar Pradesh
+                 2nd Floor, Ram Ganga Bihar Opposite Akash Meghe Dutam HDFC Bank, Moradabad 244001
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="shrink-0 text-accent" />
                 <a href="tel:+910000000000" className="text-sm text-light/65 hover:text-accent">
-                  +91 00000 00000
+                 : +91 90122 60088
                 </a>
               </li>
               <li className="flex items-center gap-3">
@@ -156,7 +161,7 @@ export default function Footer() {
                   href="mailto:hello@adglobal.com"
                   className="text-sm text-light/65 hover:text-accent"
                 >
-                  hello@adglobal.com
+                  bellezabeautyschoolmoradabad@gmail.com
                 </a>
               </li>
             </ul>

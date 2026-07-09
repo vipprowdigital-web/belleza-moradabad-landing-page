@@ -23,7 +23,7 @@ const COURSES: Course[] = [
     title: "Certificate in Basic Beauty Therapist",
     category: "makeup",
     type: "offline",
-    image: "/images/courses/course-1.jpg",
+    image: "/images/images/ChatGPT Image May 7, 2026, 11_01_37 AM (1).png",
     rating: 4,
     description:
       "Cosmetology, health & hygiene, sterilization & sanitation, skin diseases & disorders, nail art basics.",
@@ -33,7 +33,7 @@ const COURSES: Course[] = [
     title: "Certificate in Art of Makeup (AMU)",
     category: "makeup",
     type: "offline",
-    image: "/images/courses/course-2.jpg",
+    image: "/images/images/ChatGPT Image May 7, 2026, 11_01_37 AM (1).png",
     rating: 4,
     description:
       "Self makeup, day/night party makeup, cocktail makeup, haldi makeup, and bridal styling fundamentals.",
@@ -53,7 +53,7 @@ const COURSES: Course[] = [
     title: "Professional Hair Styling Certification",
     category: "hair",
     type: "offline",
-    image: "/images/courses/course-4.jpg",
+    image: "/images/images/ChatGPT Image May 7, 2026, 11_01_37 AM (1).png",
     rating: 5,
     description:
       "Cutting techniques, blow-dry styling, updos, hair coloring fundamentals, and modern trending looks.",
@@ -63,7 +63,7 @@ const COURSES: Course[] = [
     title: "Advanced Hair Color & Texture",
     category: "hair",
     type: "online",
-    image: "/images/courses/course-5.jpg",
+    image: "/images/images/ChatGPT Image May 7, 2026, 11_01_37 AM (1).png",
     rating: 4,
     description:
       "Global colouring techniques, balayage, keratin treatments, and hair texture correction methods.",
@@ -73,7 +73,7 @@ const COURSES: Course[] = [
     title: "Complete Beauty & Hair Combo Diploma",
     category: "combo",
     type: "offline",
-    image: "/images/courses/course-6.jpg",
+    image: "/images/images/ChatGPT Image May 7, 2026, 11_01_37 AM (1).png",
     rating: 5,
     description:
       "Our flagship program covering makeup artistry, hair styling, skin therapy, and salon business basics.",

@@ -10,12 +10,15 @@ import {
   useReducedMotion,
   type MotionStyle,
 } from "framer-motion";
-import { ArrowRight, ChevronDown, User, Phone, Sparkles } from "lucide-react";
+import { ArrowRight, ChevronDown, User, Phone, Sparkles, MapPin, MessageSquare } from "lucide-react";
+
+
 
 const COURSES = ["Hair Styling", "Makeup Artistry", "Skin & Spa Therapy", "Nail Art"];
+const LOCATIONS = ["Rudrapur", "Moradabad", "Dehradun", "Bazpur", "Haldwani"];
 
 // ---------- form data + validation ----------
-const initialFormData = { name: "", phone: "", course: "" };
+const initialFormData = { name: "", phone: "", course: "", location: "", message: "" };
 type FormData = typeof initialFormData;
 type FormErrors = Partial<Record<keyof FormData, string>>;
 
@@ -30,6 +33,8 @@ function validateForm(data: FormData): FormErrors {
     errors.phone = "Enter a valid phone number";
 
   if (!data.course) errors.course = "Please select a course";
+  if (!data.location) errors.location = "Please select a location";
+  // message is optional — intentionally not validated
 
   return errors;
 }
@@ -85,7 +90,7 @@ export default function HeroSection() {
       };
 
   function handleChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -114,10 +119,10 @@ export default function HeroSection() {
     // drop the w-screen/left-1/2/-translate-x-1/2 trio safely.
     <div
       ref={scrollContainerRef}
-      className="relative left-1/2 h-[240vh] w-screen -translate-x-1/2"
+      className="relative left-1/2 min-h-screen md:h-[240vh] w-screen -translate-x-1/2"
     >
       <section
-        className="sticky top-0 h-screen w-full overflow-hidden bg-[#0d0507]"
+       className="relative md:sticky md:top-0 min-h-screen md:h-screen w-full overflow-hidden bg-[#0d0507]"
         onMouseMove={handleMouseMove}
       >
         {/* ---------- 3D video stage ---------- */}
@@ -135,7 +140,7 @@ export default function HeroSection() {
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "linear-gradient(90deg, rgba(10,3,5,0.92) 0%, rgba(10,3,5,0.62) 40%, rgba(10,3,5,0.4) 64%, rgba(121,21,53,0.5) 100%), linear-gradient(180deg, rgba(10,3,5,0.4) 0%, rgba(10,3,5,0.1) 28%, rgba(10,3,5,0.6) 100%)",
+                 "linear-gradient(90deg, rgba(121,21,53,0.65) 0%, rgba(121,21,53,0.4) 38%, rgba(121,21,53,0.18) 62%, rgba(253,223,191,0.12) 100%), linear-gradient(180deg, rgba(121,21,53,0.25) 0%, rgba(0,0,0,0.05) 30%, rgba(121,21,53,0.35) 100%)",
             }}
           />
           <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_20vw_rgba(0,0,0,0.6)]" />
@@ -143,70 +148,51 @@ export default function HeroSection() {
           <div className="pointer-events-none absolute -right-40 top-1/4 h-[560px] w-[560px] rounded-full bg-accent/10 blur-[140px]" />
         </div>
 
-        {/* ---------- nav ---------- */}
-        <nav className="relative z-10 flex items-center justify-between px-8 py-7 md:px-16">
-          <div className="flex items-baseline gap-2.5">
-            <span className="text-xl font-extrabold tracking-tight text-light">AD Global</span>
-            <span className="hidden text-[11px] font-medium uppercase tracking-[2.5px] text-accent sm:inline">
-              House of Beauty
-            </span>
-          </div>
-          <div className="hidden gap-11 text-sm font-medium text-light/80 md:flex">
-            <a href="#" className="transition hover:text-accent">Home</a>
-            <a href="#" className="transition hover:text-accent">Courses</a>
-            <a href="#" className="transition hover:text-accent">About</a>
-            <a href="#" className="transition hover:text-accent">Contact</a>
-          </div>
-          <a
-            href="#"
-            className="rounded-full bg-accent px-6 py-3 text-[13px] font-bold tracking-wide text-primary shadow-[0_8px_24px_rgba(253,223,191,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgba(253,223,191,0.35)]"
-          >
-            Apply Now
-          </a>
-        </nav>
+        {/* ---------- nav (now a separate component) ---------- */}
+        {/* <Navbar /> */}
 
         {/* ---------- content ---------- */}
         <div className="relative z-10 grid h-[calc(100%-84px)] grid-cols-1 items-center gap-10 px-8 pb-14 md:grid-cols-[1.15fr_0.85fr] md:px-16 lg:px-20">
           <div>
             <div className="mb-6 flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-[3px] text-accent">
-              <Sparkles size={13} strokeWidth={2.5} />
-              Cosmetology &amp; Beauty Arts
+              
+              
               <span className="h-px w-10 bg-gradient-to-r from-accent to-transparent" />
             </div>
 
             <h1 className="max-w-[16ch] text-4xl font-extrabold leading-[1.08] tracking-[-0.01em] text-light md:text-6xl lg:text-[4.6rem]">
-              Transform Your Passion into a{" "}
+              Become a Certified Beauty Professional in{" "}
               <span className="bg-gradient-to-r from-accent via-[#f6c89a] to-accent bg-clip-text text-transparent">
-                Professional
-              </span>{" "}
-              Career
+                Moradabad
+              </span>
             </h1>
 
             <p className="mt-7 max-w-[46ch] text-base leading-relaxed text-light/75 md:text-lg">
-              Join AD Global — House of Beauty and unlock your potential with
-              world-class training in cosmetology and beauty arts.
+              Learn professional Makeup, Hair, Nail, Skin &amp; Cosmetology
+              with 100% practical training, live model practice, and 100%
+              placement support at Belleza Beauty School, Moradabad.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-5">
               <a
-                href="#"
+                href="#start-journey"
                 className="group inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-primary to-[#5c0f27] px-8 py-4 text-sm font-bold tracking-wide text-light shadow-[0_12px_30px_rgba(121,21,53,0.5)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(121,21,53,0.6)]"
               >
                 Explore Courses
                 <ArrowRight size={16} className="transition group-hover:translate-x-1" />
               </a>
               <a
-                href="#"
+                href="#start-journey"
                 className="inline-flex items-center border-b border-light/40 pb-1 text-sm font-semibold tracking-wide text-light/90 transition hover:border-accent hover:text-accent"
               >
-                Learn More
+                Book Free Counselling
               </a>
             </div>
 
             {/* premium trust strip */}
             <div className="mt-14 flex max-w-md items-center gap-6 border-t border-light/10 pt-6 text-light/70">
               <div>
-                <p className="text-2xl font-extrabold text-light">12+</p>
+                <p className="text-2xl font-extrabold text-light">4+</p>
                 <p className="text-[11px] uppercase tracking-wider">Years Legacy</p>
               </div>
               <div className="h-8 w-px bg-light/15" />
@@ -223,7 +209,7 @@ export default function HeroSection() {
           </div>
 
           {/* ---------- enquiry form ---------- */}
-          <div className="relative w-full justify-self-end md:w-[380px]">
+          <div id="start-journey" className="relative w-full scroll-mt-24 justify-self-end md:w-[380px]">
             <div className="absolute -inset-3 -z-10 rounded-[28px] bg-gradient-to-br from-accent/20 via-transparent to-primary/30 blur-xl" />
             <div className="rounded-[26px] border border-light/15 bg-[#150a0d]/60 p-9 shadow-[0_30px_70px_rgba(0,0,0,0.5)] ring-1 ring-white/5 backdrop-blur-2xl">
               {submitted ? (
@@ -322,6 +308,54 @@ export default function HeroSection() {
                       {errors.course && (
                         <p className="mt-1.5 pl-1 text-xs text-red-300">{errors.course}</p>
                       )}
+                    </div>
+
+                    <div>
+                      <div className="relative">
+                        <MapPin
+                          size={16}
+                          className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-light/40"
+                        />
+                        <select
+                          name="location"
+                          value={formData.location}
+                          onChange={handleChange}
+                          className={`w-full rounded-xl border py-3.5 pl-11 pr-4 text-sm text-light outline-none transition focus:bg-light/10 ${
+                            errors.location
+                              ? "border-red-400 bg-red-500/10 focus:border-red-400"
+                              : "border-light/20 bg-light/[0.06] focus:border-accent"
+                          }`}
+                        >
+                          <option value="" disabled className="text-neutral-900">
+                            Select Location
+                          </option>
+                          {LOCATIONS.map((loc) => (
+                            <option key={loc} value={loc} className="text-neutral-900">
+                              {loc}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      {errors.location && (
+                        <p className="mt-1.5 pl-1 text-xs text-red-300">{errors.location}</p>
+                      )}
+                    </div>
+
+                    <div>
+                      <div className="relative">
+                        <MessageSquare
+                          size={16}
+                          className="pointer-events-none absolute left-4 top-3.5 text-light/40"
+                        />
+                        <textarea
+                          name="message"
+                          value={formData.message}
+                          onChange={handleChange}
+                          placeholder="Share a message (optional)"
+                          rows={3}
+                          className="w-full resize-none rounded-xl border border-light/20 bg-light/[0.06] py-3.5 pl-11 pr-4 text-sm text-light placeholder:text-light/45 outline-none transition focus:border-accent focus:bg-light/10"
+                        />
+                      </div>
                     </div>
 
                     <button

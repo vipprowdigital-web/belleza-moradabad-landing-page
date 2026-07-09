@@ -56,7 +56,7 @@ const FEATURES: Feature[] = [
 ];
 
 const STATS = [
-  { value: "12+", label: "Years Legacy" },
+  { value: "4+", label: "Years Legacy" },
   { value: "5,000+", label: "Graduates Trained" },
   { value: "95%", label: "Placement Rate" },
   { value: "20+", label: "Expert Trainers" },
@@ -76,7 +76,7 @@ export default function WhyChooseUs() {
           <span className="h-px w-8 bg-accent/60" />
         </div>
         <h2 className="text-4xl font-extrabold tracking-tight text-light sm:text-5xl">
-          The <span className="text-accent">AD Global</span> Advantage
+          The <span className="text-accent">Belleza Beauty School</span> Advantage
         </h2>
         <p className="mt-5 text-base leading-relaxed text-light/70">
           Everything about our academy is built around one goal — turning

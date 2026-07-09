@@ -9,11 +9,11 @@ import { Phone, MessageCircle, ArrowRight } from "lucide-react";
 // include the correct extension). If a circle shows blank/broken,
 // the path below doesn't match an actual file in /public.
 const IMAGES = {
-  topLeft: "/images/4.png",
-  topRight: "/images/4.png",
-  midRight: "/images/4.png",
-  bottomLeft: "/images/4.png",
-  bottomRight: "/images/4.png",
+  topLeft: "/images/images/95.png",
+  topRight: "/images/images/4.png",
+  midRight: "/images/images/third.png",
+  bottomLeft: "/images/images/gaura-about.png",
+  bottomRight: "/images/images/4.png",
 };
 
 export default function HeroCollage() {
@@ -58,13 +58,13 @@ export default function HeroCollage() {
             Professional Course In
           </p>
           <h1 className="mt-2 text-4xl font-extrabold leading-[1.1] text-light sm:text-5xl lg:text-6xl">
-            Beauty, Hair
+           Turn Your  Obsession Into a 
             <br />
-            <span className="text-accent">&amp; Makeup</span>
+            <span className="text-accent">&amp; Beauty Career</span>
           </h1>
           <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-light/75 md:mx-0 md:text-base">
-            Learn from certified experts and turn your passion for beauty into
-            a professional, industry-ready career.
+           Belleza Beauty School proudly welcomes you to its 6th branch in Moradabad, Uttar Pradesh, continuing its journey of empowering aspiring beauty professionals with international-standard beauty education.
+           At Belleza, we believe that every individual has the potential to build a successful career in the beauty and wellness industry. All they need is the right guidance, professional training, and an environment that inspires creativity and confidence. That's exactly what we offer.
           </p>
           <div className="mt-9 flex justify-center gap-4 md:justify-start">
             <a
