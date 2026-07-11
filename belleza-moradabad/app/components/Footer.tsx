@@ -1,11 +1,12 @@
- "use client";
+"use client";
 
-import { MapPin, Phone, Mail, ArrowRight, ArrowUp } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Phone, Globe } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 // Lucide intentionally doesn't include brand/logo icons (Instagram,
-// Facebook, YouTube, etc. — that's a deliberate policy of the library),
-// so these three are small hand-rolled inline SVGs instead.
+// Facebook, YouTube, etc.), so these are small hand-rolled inline SVGs.
 function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" {...props}>
@@ -24,170 +25,236 @@ function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-function YoutubeIcon(props: React.SVGProps<SVGSVGElement>) {
+function MailIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" {...props}>
-      <rect x="2.5" y="6" width="19" height="12" rx="3.5" />
-      <path d="M10.5 9.5l5 2.5-5 2.5z" fill="currentColor" stroke="none" />
+      <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" />
+      <path d="M3 6.5l9 6.5 9-6.5" />
     </svg>
   );
 }
 
-const QUICK_LINKS = ["Home", "Courses", "About Us", "Gallery", "Contact"];
-const COURSE_LINKS = [
-  "Makeup Artistry",
-  "Hair Styling",
-  "Skin & Spa Therapy",
-  "Nail Art",
-  "Combo Diploma",
+// ⚠️ Apna actual backend base URL yahan set karo (.env me NEXT_PUBLIC_API_URL rakho)
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+
+interface SiteSettings {
+  academyName?: string; // e.g. "Belleza"
+  academySuffix?: string; // e.g. "Beauty School"
+  branchName?: string; // e.g. "Dehradun Branch"
+  tagline?: string;
+  phone?: string;
+  email?: string;
+  website?: string;
+  socials?: {
+    facebook?: string;
+    instagram?: string;
+  };
+  year?: number;
+}
+
+// Sensible defaults, shown while loading or if the settings API is unavailable
+const DEFAULTS: SiteSettings = {
+  academyName: "Belleza",
+  academySuffix: "Beauty School",
+  branchName: "",
+  tagline:
+    "Professional Makeup, Hair, Nail, Beauty, Skin & Cosmetology Courses. Empowering the next generation of beauty professionals.",
+  phone: "+91",
+  email: "",
+  website: "",
+  socials: {},
+  year: new Date().getFullYear(),
+};
+
+const ACADEMY_LINKS = [
+  { label: "About Us", href: "/about" },
+  { label: "Courses", href: "/courses" },
+  { label: "Training Timeline", href: "/timeline" },
+  { label: "Contact", href: "/contact" },
+];
+
+const STUDENT_LIFE_LINKS = [
+  { label: "Career Opportunities", href: "/career" },
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "Testimonials", href: "/testimonials" },
+  { label: "FAQs", href: "/faq" },
 ];
 
 export default function Footer() {
+  const [settings, setSettings] = useState<SiteSettings>(DEFAULTS);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function fetchSettings() {
+      try {
+        const res = await fetch(`${API_BASE}/settings`, {
+          signal: controller.signal,
+        });
+        if (!res.ok) throw new Error("Settings fetch failed");
+
+        const json = await res.json();
+        if (json?.success && json.data) {
+          setSettings({ ...DEFAULTS, ...json.data });
+        }
+      } catch {
+        // Settings API not available or failed — keep defaults, fail silently
+        // so the footer still renders instead of breaking the page.
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchSettings();
+    return () => controller.abort();
+  }, []);
+
   return (
-    <footer className="relative w-full overflow-hidden bg-gradient-to-b from-primary to-[#2c0813]">
-      {/* top accent line */}
-      <div className="h-[3px] w-full bg-gradient-to-r from-transparent via-accent to-transparent" />
-
-      {/* depth glow, consistent with the rest of the site */}
-      <div className="pointer-events-none absolute -right-32 top-10 h-[420px] w-[420px] rounded-full bg-secondary/20 blur-[140px]" />
-
-      <div className="relative z-10 mx-auto max-w-7xl px-6 pb-12 pt-16 lg:px-12">
-        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.8fr_0.8fr_1.1fr]">
-          {/* ---------- brand + newsletter ---------- */}
+    <footer className="w-full bg-primary">
+      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
+          {/* ---------- brand ---------- */}
           <div>
-            <div className="flex items-center">
-  <Image
-    src="https://res.cloudinary.com/dl6fjer3y/image/upload/v1782383362/belleza_favicon_main_lwrtxm.svg"
-    alt="AD Global Logo"
-    width={180}
-    height={60}
-    className="h-12 w-auto"
-    unoptimized
-  />
-</div>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-light/65">
-              Turning passion into profession since day one — a certified beauty
-              &amp; cosmetology academy built for real careers, not just
-              certificates.
+            <h3 className="text-2xl font-extrabold text-light">
+              {settings.academyName}{" "}
+              <span className="font-normal">{settings.academySuffix}</span>
+            </h3>
+            {settings.branchName && (
+              <p className="mt-1 text-xs font-bold uppercase tracking-[2px] text-accent">
+                {settings.branchName}
+              </p>
+            )}
+
+            <p className="mt-5 max-w-xs text-sm leading-relaxed text-light/70">
+              {settings.tagline}
             </p>
 
-            <p className="mt-8 text-xs font-bold uppercase tracking-[2px] text-light/80">
-              Get Course Updates
-            </p>
-            <form
-              onSubmit={(e) => e.preventDefault()}
-              className="mt-3 flex max-w-sm overflow-hidden rounded-full border border-light/20 bg-light/[0.06] backdrop-blur-sm"
-            >
-              <input
-                type="email"
-                placeholder="Your email address"
-                className="w-full bg-transparent px-5 py-3 text-sm text-light placeholder:text-light/45 outline-none"
-              />
-              <button
-                type="submit"
-                aria-label="Subscribe"
-                className="flex items-center justify-center gap-1.5 bg-accent px-5 text-sm font-bold text-primary transition hover:brightness-105"
-              >
-                <ArrowRight size={16} />
-              </button>
-            </form>
-
-            <div className="mt-8 flex gap-3">
-              <SocialIcon href="#" icon={InstagramIcon} label="Instagram" />
-              <SocialIcon href="#" icon={FacebookIcon} label="Facebook" />
-              <SocialIcon href="#" icon={YoutubeIcon} label="YouTube" />
+            <div className="mt-6 flex gap-3">
+              {settings.socials?.facebook && (
+                <SocialIcon
+                  href={settings.socials.facebook}
+                  icon={FacebookIcon}
+                  label="Facebook"
+                />
+              )}
+              {settings.socials?.instagram && (
+                <SocialIcon
+                  href={settings.socials.instagram}
+                  icon={InstagramIcon}
+                  label="Instagram"
+                />
+              )}
+              {settings.email && (
+                <SocialIcon
+                  href={`mailto:${settings.email}`}
+                  icon={MailIcon}
+                  label="Email"
+                />
+              )}
+              {/* Fallback icons if no dynamic socials are configured yet */}
+              {!settings.socials?.facebook &&
+                !settings.socials?.instagram &&
+                !settings.email && (
+                  <>
+                    <SocialIcon href="#" icon={FacebookIcon} label="Facebook" />
+                    <SocialIcon href="#" icon={InstagramIcon} label="Instagram" />
+                    <SocialIcon href="#" icon={MailIcon} label="Email" />
+                  </>
+                )}
             </div>
           </div>
 
-          {/* ---------- quick links ---------- */}
+          {/* ---------- academy links ---------- */}
           <div>
             <h4 className="text-sm font-bold uppercase tracking-[2px] text-light">
-              Quick Links
+              Academy
             </h4>
             <ul className="mt-5 space-y-3">
-              {QUICK_LINKS.map((link) => (
-                <li key={link}>
-                  <a
-                    href="#"
-                    className="text-sm text-light/65 transition hover:pl-1 hover:text-accent"
+              {ACADEMY_LINKS.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-light/70 transition hover:text-accent"
                   >
-                    {link}
-                  </a>
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* ---------- courses ---------- */}
+          {/* ---------- student life links ---------- */}
           <div>
             <h4 className="text-sm font-bold uppercase tracking-[2px] text-light">
-              Courses
+              Student Life
             </h4>
             <ul className="mt-5 space-y-3">
-              {COURSE_LINKS.map((link) => (
-                <li key={link}>
-                  <a
-                    href="#"
-                    className="text-sm text-light/65 transition hover:pl-1 hover:text-accent"
+              {STUDENT_LIFE_LINKS.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-light/70 transition hover:text-accent"
                   >
-                    {link}
-                  </a>
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* ---------- contact ---------- */}
+          {/* ---------- visit us ---------- */}
           <div>
             <h4 className="text-sm font-bold uppercase tracking-[2px] text-light">
-              Get In Touch
+              Visit Us
             </h4>
             <ul className="mt-5 space-y-4">
-              <li className="flex items-start gap-3">
-                <MapPin size={18} className="mt-0.5 shrink-0 text-accent" />
-                <span className="text-sm leading-relaxed text-light/65">
-                 2nd Floor, Ram Ganga Bihar Opposite Akash Meghe Dutam HDFC Bank, Moradabad 244001
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone size={18} className="shrink-0 text-accent" />
-                <a href="tel:+910000000000" className="text-sm text-light/65 hover:text-accent">
-                 : +91 90122 60088
-                </a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail size={18} className="shrink-0 text-accent" />
-                <a
-                  href="mailto:hello@adglobal.com"
-                  className="text-sm text-light/65 hover:text-accent"
-                >
-                  bellezabeautyschoolmoradabad@gmail.com
-                </a>
-              </li>
+              {settings.phone && (
+                <li className="flex items-center gap-3">
+                  <Phone size={18} className="shrink-0 text-accent" />
+                  <a
+                    href={`tel:${settings.phone}`}
+                    className="text-sm text-light/70 hover:text-accent"
+                  >
+                    {settings.phone}
+                  </a>
+                </li>
+              )}
+              {settings.website && (
+                <li className="flex items-center gap-3">
+                  <Globe size={18} className="shrink-0 text-accent" />
+                  <a
+                    href={settings.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-light/70 hover:text-accent"
+                  >
+                    {settings.website.replace(/^https?:\/\//, "")}
+                  </a>
+                </li>
+              )}
+              {!settings.website && (
+                <li className="flex items-center gap-3">
+                  <Globe size={18} className="shrink-0 text-accent" />
+                </li>
+              )}
             </ul>
           </div>
         </div>
 
         {/* ---------- bottom bar ---------- */}
-        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-light/10 pt-8 sm:flex-row">
-          <p className="text-xs text-light/50">
-            © {new Date().getFullYear()} AD Global — House of Beauty. All rights reserved.
+        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-light/15 pt-8 sm:flex-row">
+          <p className="text-xs text-light/60">
+            © {settings.year} {settings.academyName} {settings.academySuffix}. All
+            rights reserved.
           </p>
-          <div className="flex gap-6 text-xs text-light/50">
-            <a href="#" className="hover:text-accent">Privacy Policy</a>
-            <a href="#" className="hover:text-accent">Terms of Service</a>
-          </div>
+          <p className="text-xs text-light/60">
+            Developed by{" "}
+            <span className="font-bold text-accent">VIPPROW</span>
+          </p>
         </div>
       </div>
-
-      {/* back-to-top */}
-      <button
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        aria-label="Back to top"
-        className="absolute bottom-8 right-6 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-light/20 bg-light/10 text-light backdrop-blur-sm transition hover:bg-accent hover:text-primary lg:right-12"
-      >
-        <ArrowUp size={18} />
-      </button>
     </footer>
   );
 }
@@ -204,10 +271,12 @@ function SocialIcon({
   return (
     <a
       href={href}
+      target={href.startsWith("http") ? "_blank" : undefined}
+      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
       aria-label={label}
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-light/20 text-light/80 transition hover:border-accent hover:bg-accent hover:text-primary"
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-light/30 text-light transition hover:border-accent hover:bg-accent hover:text-primary"
     >
-      <Icon width={17} height={17} />
+      <Icon width={16} height={16} />
     </a>
   );
 }

@@ -44,13 +44,27 @@ const app = express();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const routePrefix = "/api/v1";
 const allowedOrigins = [
-  process.env.NEXT_FRONTEND_URL, // Next.js production site
-  process.env.ADMIN_FRONTEND_URL, // Admin production site
-  process.env.REACT_NATIVE_FRONTEND_URL, // React Native local
-  process.env.LANDING_PAGE_URL,
-  "http://192.168.29.175:3000",
-  "http://localhost:5175",
+  "http://localhost:3000",
+  "http://192.168.29.192:3000",
+  process.env.ADMIN_FRONTEND_URL,   // http://localhost:5174
+  process.env.LANDING_PAGE_URL,     // http://localhost:5173
+  process.env.NEXT_FRONTEND_URL,    // http://192.168.29.192:3000
 ];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Postman/curl jaisi requests me origin undefined hota hai, allow karo
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log("❌ Blocked by CORS:", origin);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 // ===============================================
 // 🧱 Core Middleware
